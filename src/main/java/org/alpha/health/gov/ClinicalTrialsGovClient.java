@@ -1,5 +1,7 @@
 package org.alpha.health.gov;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -9,9 +11,10 @@ import java.util.stream.Collectors;
 
 public class ClinicalTrialsGovClient {
     private static String FIELD_LIST =
-        "fields=NCTId,Condition,BriefTitle,OfficialTitle,LocationFacility";
+        "fields=NCTId,Condition,BriefTitle,OfficialTitle,LocationCity,LocationState,LocationZip";
     private static String CLINICAL_TRIALS_GOV_URL = "https://clinicaltrials.gov/api/query/study_fields?";
 
+    private final ObjectMapper objectMapper = new ObjectMapper();
     /**
      * gets Json response from clinical trials gov api
      * @param expression
@@ -41,7 +44,11 @@ public class ClinicalTrialsGovClient {
                 .lines()
                 .collect(Collectors.joining("\n"));
 
-            return response;
+
+            final ClinicalTrialGovClientResponse clinicalTrialGovClientResponse =
+                objectMapper.readValue(response, ClinicalTrialGovClientResponse.class);
+
+            return clinicalTrialGovClientResponse.toString();
 
         } catch (final Exception e) {
             throw new RuntimeException("SERVER Error: " + e);
