@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 public class ClinicalTrialsGovClient {
     private static String FIELD_LIST =
-        "fields=NCTId,Condition,BriefTitle,OfficialTitle,LocationCity,LocationState,LocationZip";
+        "fields=NCTId,Condition,BriefTitle,OfficialTitle,LocationCity,LocationState,LocationZip,LocationCountry";
     private static String CLINICAL_TRIALS_GOV_URL = "https://clinicaltrials.gov/api/query/study_fields?";
 
     private final ObjectMapper objectMapper = new ObjectMapper();

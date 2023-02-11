@@ -38,4 +38,7 @@ public class Study {
 
     @JsonProperty("LocationZip")
     public List<String> LocationZip;
+
+    @JsonProperty("LocationCountry")
+    public List<String> locationCountry;
 }
