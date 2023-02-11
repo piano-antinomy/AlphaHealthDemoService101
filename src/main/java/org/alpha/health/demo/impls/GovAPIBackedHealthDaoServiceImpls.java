@@ -4,6 +4,8 @@ import org.alpha.health.demo.api.HealthDaoService;
 import org.alpha.health.demo.model.QueryClinicalTrialsRequest;
 import org.alpha.health.demo.model.QueryClinicalTrialsResponse;
 import org.alpha.health.gov.ClinicalTrialsGovClient;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Collections;
 
@@ -12,7 +14,8 @@ import java.util.Collections;
  */
 public class GovAPIBackedHealthDaoServiceImpls implements HealthDaoService {
 
-    ClinicalTrialsGovClient clinicalTrialsGovClient = new ClinicalTrialsGovClient();
+    private static Logger LOGGER = LogManager.getLogger(GovAPIBackedHealthDaoServiceImpls.class);
+    final ClinicalTrialsGovClient clinicalTrialsGovClient = new ClinicalTrialsGovClient();
     @Override
     public QueryClinicalTrialsResponse queryClinicalTrials(final QueryClinicalTrialsRequest request) {
 
@@ -20,7 +23,7 @@ public class GovAPIBackedHealthDaoServiceImpls implements HealthDaoService {
         String response = clinicalTrialsGovClient.getStudiesWithSpecifiedFields(
             request.condition + "+" + request.getLocation());
 
-        System.out.println(response);
+        LOGGER.info("response: " + response);
         return QueryClinicalTrialsResponse.builder().clinicalTrialList(Collections.emptyList()).build();
     }
 }

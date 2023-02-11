@@ -1,6 +1,8 @@
 plugins {
-    id 'java'
+    id 'application'
 }
+
+apply plugin : "java"
 
 group 'org.alpha.health'
 version '1.0-SNAPSHOT'
@@ -19,6 +21,10 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.26'
     annotationProcessor 'org.projectlombok:lombok:1.18.26'
 
+    // log4J
+    implementation 'org.apache.logging.log4j:log4j-api:2.19.0'
+    implementation 'org.apache.logging.log4j:log4j-core:2.19.0'
+
     testCompileOnly 'org.projectlombok:lombok:1.18.26'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.26'
 
@@ -28,4 +34,9 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+application {
+    mainClassName = "org.alpha.health.MainService"
+    applicationDefaultJvmArgs = ['-Dlog4j2.configurationFile=log4j2.xml']
 }

@@ -5,12 +5,15 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import org.alpha.health.demo.api.HealthDaoService;
 import org.alpha.health.demo.model.QueryClinicalTrialsRequest;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
 public class HealthDomainServiceHandler implements HttpHandler {
+    private static Logger LOGGER = LogManager.getLogger(HealthDomainServiceHandler.class);
     final ObjectMapper objectMapper = new ObjectMapper();
     final HealthDaoService dao = new GovAPIBackedHealthDaoServiceImpls();
     @Override
@@ -24,11 +27,11 @@ public class HealthDomainServiceHandler implements HttpHandler {
                 final QueryClinicalTrialsRequest queryClinicalTrialsRequest
                     = objectMapper.readValue(inputStream, QueryClinicalTrialsRequest.class);
 
-                System.out.println("getting input: " + queryClinicalTrialsRequest);
+                LOGGER.info("getting input: " + queryClinicalTrialsRequest);
 
                 String response = dao.queryClinicalTrials(queryClinicalTrialsRequest).toString();
 
-                System.out.println("response: " + response);
+                LOGGER.info("final response: " + response);
 
                 // this line is a must to set the length
                 httpExchange.sendResponseHeaders(200, response.length());
@@ -36,7 +39,7 @@ public class HealthDomainServiceHandler implements HttpHandler {
                 outputStream.flush();
                 outputStream.close();
             } catch (final Exception e) {
-                System.out.println("exception: " + e);
+                LOGGER.error("exception: " + e);
 
                 String errorResponse = "Server Errors";
                 httpExchange.sendResponseHeaders(500, errorResponse.length());
